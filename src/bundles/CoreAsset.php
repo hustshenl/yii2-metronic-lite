@@ -30,9 +30,7 @@ class CoreAsset extends AssetBundle {
      * @var array css assets
      */
     public $css = [
-        'global/plugins/simple-line-icons/simple-line-icons.min.css',
-        'global/plugins/uniform/css/uniform.default.css',
-        'global/plugins/bootstrap-switch/css/bootstrap-switch.min.css',
+
     ];
 
     /**
