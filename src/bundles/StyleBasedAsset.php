@@ -72,7 +72,6 @@ class StyleBasedAsset extends AssetBundle {
      */
     private function _handleStyleBased()
     {
-        \yii::trace($this->styleBasedCss);
         $this->css = ArrayHelper::merge($this->styleBasedCss[Metronic::getComponent()->style], $this->css);
     }
 

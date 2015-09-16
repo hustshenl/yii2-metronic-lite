@@ -4,7 +4,6 @@
 
 
 yii.actionColumn = (function ($) {
-
     var pub = {
         clickableSelector: 'a.action-delete, a.action-refresh',
         isActive: true,
