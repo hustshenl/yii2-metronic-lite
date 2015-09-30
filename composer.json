@@ -10,7 +10,8 @@
     "authors": [
         {
             "name": "Shen Lei",
-            "email": "shen@shenl.com"
+            "email": "shen@shenl.com",
+            "homepage": "http://www.shenl.com/"
         }
     ],
     "require": {
