@@ -96,7 +96,7 @@ class Menu extends \yii\widgets\Menu {
      * The token `{arrow}` will be replaced with the corresponding link arrow.
      * This property will be overridden by the `template` option set in individual menu items via [[items]].
      */
-    public $linkTemplate = '<a href="{url}">{icon}{label}{badge}{arrow}</a>';
+    public $linkTemplate = '<a href="{url}"class="{class}">{icon}{label}{badge}{arrow}</a>';
 
     /**
      * @var bool Indicates whether menu is visible.
@@ -141,7 +141,7 @@ class Menu extends \yii\widgets\Menu {
         {
             $options = array_merge($this->itemOptions, ArrayHelper::getValue($item, 'options', []));
             $tag = ArrayHelper::remove($options, 'tag', 'li');
-            $class = [];
+            $class = ['nav-item'];
             if ($item['active'])
             {
                 $class[] = $this->activeCssClass;
@@ -190,6 +190,7 @@ class Menu extends \yii\widgets\Menu {
     {
         return strtr(ArrayHelper::getValue($item, 'template', $this->linkTemplate), [
             '{url}' => $this->_pullItemUrl($item),
+            '{class}' => $this->_pullItemClass($item),
             '{label}' => $this->_pullItemLabel($item),
             '{icon}' => $this->_pullItemIcon($item),
             '{arrow}' => $this->_pullItemArrow($item),
@@ -212,6 +213,15 @@ class Menu extends \yii\widgets\Menu {
         }
 
         return Url::toRoute($item['url']);
+    }
+    /**
+     * Pulls out item url
+     * @param array $item given item
+     * @return string item url
+     */
+    private function _pullItemClass($item)
+    {
+        return empty($item['items'])?'nav-link':'nav-link nav-toggle';
     }
 
     /**

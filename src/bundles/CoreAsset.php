@@ -45,7 +45,8 @@ class CoreAsset extends AssetBundle {
         'global/plugins/jquery.cokie.min.js',
         'global/plugins/uniform/jquery.uniform.min.js',
         'global/plugins/bootstrap-switch/js/bootstrap-switch.min.js',*/
-        'global/scripts/metronic.js',
+        'global/scripts/app.js',
+        'global/plugins/jquery-slimscroll/jquery.slimscroll.min.js',
     ];
 
     /**

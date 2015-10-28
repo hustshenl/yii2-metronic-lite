@@ -1,7 +1,7 @@
 /**
-Core script to handle the entire theme and core functions
-**/
-var Metronic = function() {
+ Core script to handle the entire theme and core functions
+ **/
+var App = function() {
 
     // IE mode
     var isRTL = false;
@@ -11,7 +11,7 @@ var Metronic = function() {
 
     var resizeHandlers = [];
 
-    var assetsPath = '../../assets/';
+    var assetsPath = '../assets/';
 
     var globalImgPath = 'global/img/';
 
@@ -50,7 +50,7 @@ var Metronic = function() {
         }
     };
 
-    // runs callback functions set by Metronic.addResponsiveHandler().
+    // runs callback functions set by App.addResponsiveHandler().
     var _runResizeHandlers = function() {
         // reinitialize other subscribed elements
         for (var i = 0; i < resizeHandlers.length; i++) {
@@ -118,7 +118,7 @@ var Metronic = function() {
                 $('body').removeClass('page-portlet-fullscreen');
                 portlet.children('.portlet-body').css('height', 'auto');
             } else {
-                var height = Metronic.getViewPort().height -
+                var height = App.getViewPort().height -
                     portlet.children('.portlet-title').outerHeight() -
                     parseInt(portlet.children('.portlet-body').css('padding-top')) -
                     parseInt(portlet.children('.portlet-body').css('padding-bottom'));
@@ -136,7 +136,7 @@ var Metronic = function() {
             var url = $(this).attr("data-url");
             var error = $(this).attr("data-error-display");
             if (url) {
-                Metronic.blockUI({
+                App.blockUI({
                     target: el,
                     animate: true,
                     overlayColor: 'none'
@@ -147,11 +147,12 @@ var Metronic = function() {
                     url: url,
                     dataType: "html",
                     success: function(res) {
-                        Metronic.unblockUI(el);
+                        App.unblockUI(el);
                         el.html(res);
+                        App.initAjax() // reinitialize elements & plugins for newly loaded content
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
-                        Metronic.unblockUI(el);
+                        App.unblockUI(el);
                         var msg = 'Error on reloading the content. Please check your connection and try again.';
                         if (error == "toastr" && toastr) {
                             toastr.error(msg);
@@ -168,13 +169,13 @@ var Metronic = function() {
                 });
             } else {
                 // for demo purpose
-                Metronic.blockUI({
+                App.blockUI({
                     target: el,
                     animate: true,
                     overlayColor: 'none'
                 });
                 window.setTimeout(function() {
-                    Metronic.unblockUI(el);
+                    App.unblockUI(el);
                 }, 1000);
             }
         });
@@ -200,7 +201,7 @@ var Metronic = function() {
         if (!$().uniform) {
             return;
         }
-        var test = $("input[type=checkbox]:not(.toggle, .make-switch, .icheck), input[type=radio]:not(.toggle, .star, .make-switch, .icheck)");
+        var test = $("input[type=checkbox]:not(.toggle, .md-check, .md-radiobtn, .make-switch, .icheck), input[type=radio]:not(.toggle, .md-check, .md-radiobtn, .star, .make-switch, .icheck)");
         if (test.size() > 0) {
             test.each(function() {
                 if ($(this).parents(".checker").size() === 0) {
@@ -210,6 +211,81 @@ var Metronic = function() {
             });
         }
     };
+
+    // Handlesmaterial design checkboxes
+    var handleMaterialDesign = function() {
+
+        // Material design ckeckbox and radio effects
+        $('body').on('click', '.md-checkbox > label, .md-radio > label', function() {
+            var the = $(this);
+            // find the first span which is our circle/bubble
+            var el = $(this).children('span:first-child');
+
+            // add the bubble class (we do this so it doesnt show on page load)
+            el.addClass('inc');
+
+            // clone it
+            var newone = el.clone(true);
+
+            // add the cloned version before our original
+            el.before(newone);
+
+            // remove the original so that it is ready to run on next click
+            $("." + el.attr("class") + ":last", the).remove();
+        });
+
+        if ($('body').hasClass('page-md')) {
+            // Material design click effect
+            // credit where credit's due; http://thecodeplayer.com/walkthrough/ripple-click-effect-google-material-design       
+            var element, circle, d, x, y;
+            $('body').on('click', 'a.btn, button.btn, input.btn, label.btn', function(e) {
+                element = $(this);
+
+                if(element.find(".md-click-circle").length == 0) {
+                    element.prepend("<span class='md-click-circle'></span>");
+                }
+
+                circle = element.find(".md-click-circle");
+                circle.removeClass("md-click-animate");
+
+                if(!circle.height() && !circle.width()) {
+                    d = Math.max(element.outerWidth(), element.outerHeight());
+                    circle.css({height: d, width: d});
+                }
+
+                x = e.pageX - element.offset().left - circle.width()/2;
+                y = e.pageY - element.offset().top - circle.height()/2;
+
+                circle.css({top: y+'px', left: x+'px'}).addClass("md-click-animate");
+
+                setTimeout(function() {
+                    circle.remove();
+                }, 1000);
+            });
+        }
+
+        // Floating labels
+        var handleInput = function(el) {
+            if (el.val() != "") {
+                el.addClass('edited');
+            } else {
+                el.removeClass('edited');
+            }
+        }
+
+        $('body').on('keydown', '.form-md-floating-label .form-control', function(e) {
+            handleInput($(this));
+        });
+        $('body').on('blur', '.form-md-floating-label .form-control', function(e) {
+            handleInput($(this));
+        });
+
+        $('.form-md-floating-label .form-control').each(function(){
+            if ($(this).val().length > 0) {
+                $(this).addClass('edited');
+            }
+        });
+    }
 
     // Handles custom checkboxes & radios using jQuery iCheck plugin
     var handleiCheck = function() {
@@ -249,13 +325,13 @@ var Metronic = function() {
         if (!$().confirmation) {
             return;
         }
-        $('[data-toggle=confirmation]').confirmation({ container: 'body', btnOkClass: 'btn-xs btn-success', btnCancelClass: 'btn-xs btn-danger'});
+        $('[data-toggle=confirmation]').confirmation({ container: 'body', btnOkClass: 'btn btn-sm btn-success', btnCancelClass: 'btn btn-sm btn-danger'});
     }
-    
+
     // Handles Bootstrap Accordions.
     var handleAccordions = function() {
         $('body').on('shown.bs.collapse', '.accordion.scrollable', function(e) {
-            Metronic.scrollTo($(e.target));
+            App.scrollTo($(e.target));
         });
     };
 
@@ -263,17 +339,23 @@ var Metronic = function() {
     var handleTabs = function() {
         //activate tab if tab id provided in the URL
         if (location.hash) {
-            var tabid = location.hash.substr(1);
+            var tabid = encodeURI(location.hash.substr(1));
             $('a[href="#' + tabid + '"]').parents('.tab-pane:hidden').each(function() {
                 var tabid = $(this).attr("id");
                 $('a[href="#' + tabid + '"]').click();
             });
             $('a[href="#' + tabid + '"]').click();
         }
+
+        if ($().tabdrop) {
+            $('.tabbable-tabdrop .nav-pills, .tabbable-tabdrop .nav-tabs').tabdrop({
+                text: '<i class="fa fa-ellipsis-v"></i>&nbsp;<i class="fa fa-angle-down"></i>'
+            });
+        }
     };
 
     // Handles Bootstrap Modals.
-    var handleModals = function() {        
+    var handleModals = function() {
         // fix stackable modal issue: when 2 or more modals opened, closing one of modal will remove .modal-open class. 
         $('body').on('hide.bs.modal', function() {
             if ($('.modal:visible').size() > 1 && $('html').hasClass('modal-open') === false) {
@@ -332,8 +414,8 @@ var Metronic = function() {
     // Handles Bootstrap Dropdowns
     var handleDropdowns = function() {
         /*
-          Hold dropdown on click  
-        */
+         Hold dropdown on click
+         */
         $('body').on('click', '.dropdown-menu.hold-on-click', function(e) {
             e.stopPropagation();
         });
@@ -365,6 +447,13 @@ var Metronic = function() {
         });
     };
 
+    // Handle textarea autosize 
+    var handleTextareaAutosize = function() {
+        if (typeof(autosize) == "function") {
+            autosize(document.querySelector('textarea.autosizeme'));
+        }
+    }
+
     // Handles Bootstrap Popovers
 
     // last popep popover
@@ -384,7 +473,7 @@ var Metronic = function() {
 
     // Handles scrollable contents using jQuery SlimScroll plugin.
     var handleScrollers = function() {
-        Metronic.initSlimScroll('.scroller');
+        App.initSlimScroll('.scroller');
     };
 
     // Handles Image Preview using jQuery Fancybox plugin
@@ -406,6 +495,18 @@ var Metronic = function() {
                 }
             });
         }
+    };
+
+    // Handles counterup plugin wrapper
+    var handleCounterup = function() {
+        if (!$().counterUp) {
+            return;
+        }
+
+        $("[data-counter='counterup']").counterUp({
+            delay: 10,
+            time: 1000
+        });
     };
 
     // Fix input placeholder issue for IE8 and IE9
@@ -438,12 +539,52 @@ var Metronic = function() {
     // Handle Select2 Dropdowns
     var handleSelect2 = function() {
         if ($().select2) {
+            $.fn.select2.defaults.set("theme", "bootstrap");
             $('.select2me').select2({
                 placeholder: "Select",
+                width: 'auto',
                 allowClear: true
             });
         }
     };
+
+    // handle group element heights
+    var handleHeight = function() {
+        $('[data-auto-height]').each(function() {
+            var parent = $(this);
+            var items = $('[data-height]', parent);
+            var height = 0;
+            var mode = parent.attr('data-mode');
+            var offset = parseInt(parent.attr('data-offset') ? parent.attr('data-offset') : 0);
+
+            items.each(function() {
+                if ($(this).attr('data-height') == "height") {
+                    $(this).css('height', '');
+                } else {
+                    $(this).css('min-height', '');
+                }
+
+                var height_ = (mode == 'base-height' ? $(this).outerHeight() : $(this).outerHeight(true));
+                if (height_ > height) {
+                    height = height_;
+                }
+            });
+
+            height = height + offset;
+
+            items.each(function() {
+                if ($(this).attr('data-height') == "height") {
+                    $(this).css('height', height);
+                } else {
+                    $(this).css('min-height', height);
+                }
+            });
+
+            if(parent.attr('data-related')) {
+                $(parent.attr('data-related')).css('height', parent.height());
+            }
+        });
+    }
 
     //* END:CORE HANDLERS *//
 
@@ -457,7 +598,8 @@ var Metronic = function() {
             handleInit(); // initialize core variables
             handleOnResize(); // set and handle responsive    
 
-            //UI Component handlers            
+            //UI Component handlers     
+            handleMaterialDesign(); // handle material design       
             handleUniform(); // hanfle custom radio & checkboxes
             handleiCheck(); // handles custom icheck radio and checkboxes
             handleBootstrapSwitch(); // handle bootstrap switch plugin
@@ -473,6 +615,11 @@ var Metronic = function() {
             handleAccordions(); //handles accordions 
             handleModals(); // handle modals
             handleBootstrapConfirmation(); // handle bootstrap confirmations
+            handleTextareaAutosize(); // handle autosize textareas
+            handleCounterup(); // handle counterup instances
+
+            //Handle group element heights
+            this.addResizeHandler(handleHeight); // handle auto calculating height on window resize
 
             // Hacks
             handleFixInputPlaceholderForIE(); //IE8 & IE9 input placeholder issue fix
@@ -514,13 +661,17 @@ var Metronic = function() {
             _runResizeHandlers();
         },
 
-        // wrMetronicer function to scroll(focus) to an element
+        // wrApper function to scroll(focus) to an element
         scrollTo: function(el, offeset) {
             var pos = (el && el.size() > 0) ? el.offset().top : 0;
 
             if (el) {
                 if ($('body').hasClass('page-header-fixed')) {
                     pos = pos - $('.page-header').height();
+                } else if ($('body').hasClass('page-header-top-fixed')) {
+                    pos = pos - $('.page-header-top').height();
+                } else if ($('body').hasClass('page-header-menu-fixed')) {
+                    pos = pos - $('.page-header-menu').height();
                 }
                 pos = pos + (offeset ? offeset : -1 * el.height());
             }
@@ -604,10 +755,10 @@ var Metronic = function() {
 
         // function to scroll to the top
         scrollTop: function() {
-            Metronic.scrollTo();
+            App.scrollTo();
         },
 
-        // wrMetronicer function to  block element(indicate loading)
+        // wrApper function to  block element(indicate loading)
         blockUI: function(options) {
             options = $.extend(true, {}, options);
             var html = '';
@@ -660,7 +811,7 @@ var Metronic = function() {
             }
         },
 
-        // wrMetronicer function to  un-block element(finish loading)
+        // wrApper function to  un-block element(finish loading)
         unblockUI: function(target) {
             if (target) {
                 $(target).unblock({
@@ -702,16 +853,16 @@ var Metronic = function() {
                 icon: "" // put icon before the message
             }, options);
 
-            var id = Metronic.getUniqueID("Metronic_alert");
+            var id = App.getUniqueID("App_alert");
 
-            var html = '<div id="' + id + '" class="Metronic-alerts alert alert-' + options.type + ' fade in">' + (options.close ? '<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>' : '') + (options.icon !== "" ? '<i class="fa-lg fa fa-' + options.icon + '"></i>  ' : '') + options.message + '</div>';
+            var html = '<div id="' + id + '" class="custom-alerts alert alert-' + options.type + ' fade in">' + (options.close ? '<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>' : '') + (options.icon !== "" ? '<i class="fa-lg fa fa-' + options.icon + '"></i>  ' : '') + options.message + '</div>';
 
             if (options.reset) {
-                $('.Metronic-alerts').remove();
+                $('.custom-alerts').remove();
             }
 
             if (!options.container) {
-                if ($('body').hasClass("page-container-bg-solid")) {
+                if ($('body').hasClass("page-container-bg-solid") || $('body').hasClass("page-content-white")) {
                     $('.page-title').after(html);
                 } else {
                     if ($('.page-bar').size() > 0) {
@@ -729,7 +880,7 @@ var Metronic = function() {
             }
 
             if (options.focus) {
-                Metronic.scrollTo($('#' + id));
+                App.scrollTo($('#' + id));
             }
 
             if (options.closeInSeconds > 0) {
@@ -755,7 +906,7 @@ var Metronic = function() {
             }
         },
 
-        //wrMetronicer function to update/sync jquery uniform checkbox & radios
+        //wrApper function to update/sync jquery uniform checkbox & radios
         updateUniform: function(els) {
             $.uniform.update(els); // update the uniform checkbox & radios UI after the actual input control state changed
         },
@@ -879,12 +1030,16 @@ var Metronic = function() {
             var sizes = {
                 'xs' : 480,     // extra small
                 'sm' : 768,     // small
-                'md' : 900,     // medium
+                'md' : 992,     // medium
                 'lg' : 1200     // large
             };
 
-            return sizes[size] ? sizes[size] : 0; 
+            return sizes[size] ? sizes[size] : 0;
         }
     };
 
 }();
+
+jQuery(document).ready(function() {
+    App.init(); // init metronic core componets
+});

@@ -1,6 +1,6 @@
 /**
-Demo script to handle the theme demo
-**/
+ Demo script to handle the theme demo
+ **/
 var Demo = function() {
 
     // Handle Theme Settings
@@ -16,17 +16,17 @@ var Demo = function() {
         $('.page-header-option', panel).val("fixed");
         $('.page-footer-option', panel).val("default");
         if ($('.sidebar-pos-option').attr("disabled") === false) {
-            $('.sidebar-pos-option', panel).val(Metronic.isRTL() ? 'right' : 'left');
+            $('.sidebar-pos-option', panel).val(App.isRTL() ? 'right' : 'left');
         }
 
         //handle theme layout
         var resetLayout = function() {
             $("body").
-            removeClass("page-boxed").
-            removeClass("page-footer-fixed").
-            removeClass("page-sidebar-fixed").
-            removeClass("page-header-fixed").
-            removeClass("page-sidebar-reversed");
+                removeClass("page-boxed").
+                removeClass("page-footer-fixed").
+                removeClass("page-sidebar-fixed").
+                removeClass("page-header-fixed").
+                removeClass("page-sidebar-reversed");
 
             $('.page-header > .page-header-inner').removeClass("container");
 
@@ -41,7 +41,7 @@ var Demo = function() {
                 $('.scroll-to-top').insertAfter('.page-footer');
             }
 
-             $(".top-menu > .navbar-nav > li.dropdown").removeClass("dropdown-dark");
+            $(".top-menu > .navbar-nav > li.dropdown").removeClass("dropdown-dark");
 
             $('body > .container').remove();
         };
@@ -89,7 +89,7 @@ var Demo = function() {
 
             if (lastSelectedLayout != layoutOption) {
                 //layout changed, run responsive handler: 
-                Metronic.runResizeHandlers();
+                App.runResizeHandlers();
             }
             lastSelectedLayout = layoutOption;
 
@@ -151,7 +151,7 @@ var Demo = function() {
             }
 
             //sidebar position
-            if (Metronic.isRTL()) {
+            if (App.isRTL()) {
                 if (sidebarPosOption === 'left') {
                     $("body").addClass("page-sidebar-reversed");
                     $('#frontend-link').tooltip('destroy').tooltip({
@@ -183,8 +183,8 @@ var Demo = function() {
 
         // handle theme colors
         var setColor = function(color) {
-            var color_ = (Metronic.isRTL() ? color + '-rtl' : color);
-            $('#style_color').attr("href", Layout.getLayoutCssPath() + 'themes/' + color_ + ".css");
+            var color_ = (App.isRTL() ? color + '-rtl' : color);
+            $('#style_color').attr("href", Layout.getLayoutCssPath() + 'themes/' + color_ + ".min.css");
             if (color == 'light2') {
                 $('.page-logo img').attr('src', Layout.getLayoutImgPath() + 'logo-invert.png');
             } else {
@@ -251,39 +251,15 @@ var Demo = function() {
         $('.layout-option, .page-header-option, .page-header-top-dropdown-style-option, .sidebar-option, .page-footer-option, .sidebar-pos-option, .sidebar-style-option, .sidebar-menu-option', panel).change(setLayout);
     };
 
-    // Handle 
-    var handlePromo = function() {
-
-        var init = function() {
-
-        }
-
-        if ($.cookie) {
-            var pageViews = $.cookie('user-page-views') ? parseInt($.cookie('user-page-views')) : 0;
-            var userDismiss = $.cookie('user-dismiss') ? parseInt($.cookie('user-dismiss')) : 0;
-            
-            pageViews = pageViews + 1;
-            $.cookie('user-page-views', pageViews, { expires: 1, path: '/' });
-
-            //alert(pageViews);
-
-            if (userDismiss === 0 && (pageViews === 10 || pageViews === 30 || pageViews === 50)) {
-                setTimeout(init, 1000);
-            }
-        } else {
-            return;
-        }
-    };
-
     // handle theme style
     var setThemeStyle = function(style) {
         var file = (style === 'rounded' ? 'components-rounded' : 'components');
-        file = (Metronic.isRTL() ? file + '-rtl' : file);
+        file = (App.isRTL() ? file + '-rtl' : file);
 
-        $('#style_components').attr("href", Metronic.getGlobalCssPath() + file + ".css");
+        $('#style_components').attr("href", App.getGlobalCssPath() + file + ".min.css");
 
-        if ($.cookie) {
-            $.cookie('layout-style-option', style);
+        if (typeof Cookies !== "undefined") {
+            Cookies.set('layout-style-option', style);
         }
     };
 
@@ -292,21 +268,25 @@ var Demo = function() {
         //main function to initiate the theme
         init: function() {
             // handles style customer tool
-            handleTheme(); 
+            handleTheme();
 
-            handlePromo();
-            
             // handle layout style change
             $('.theme-panel .layout-style-option').change(function() {
-                 setThemeStyle($(this).val());
+                setThemeStyle($(this).val());
             });
 
             // set layout style from cookie
-            if ($.cookie && $.cookie('layout-style-option') === 'rounded') {
-                setThemeStyle($.cookie('layout-style-option'));
-                $('.theme-panel .layout-style-option').val($.cookie('layout-style-option'));
-            }            
+            if (typeof Cookies !== "undefined" && Cookies.get('layout-style-option') === 'rounded') {
+                setThemeStyle(Cookies.get('layout-style-option'));
+                $('.theme-panel .layout-style-option').val(Cookies.get('layout-style-option'));
+            }
         }
     };
 
 }();
+
+if (App.isAngularJsApp() === false) {
+    jQuery(document).ready(function() {
+        Demo.init(); // init metronic core componets
+    });
+}
