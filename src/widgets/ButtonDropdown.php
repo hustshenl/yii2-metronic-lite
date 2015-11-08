@@ -90,7 +90,8 @@ class ButtonDropdown extends \yii\bootstrap\ButtonDropdown {
      */
     protected function renderButton()
     {
-        $label = Html::tag('span', $this->label, ['class' => 'hidden-sm hidden-xs']);
+        //$label = Html::tag('span', $this->label, ['class' => 'hidden-sm hidden-xs']);
+        $label = Html::tag('span', $this->label);
 
         if ($this->split)
         {

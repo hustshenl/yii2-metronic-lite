@@ -21,9 +21,10 @@ class CoreAsset extends AssetBundle {
      * @var array depended packages
      */
     public $depends = [
+        'yii\bootstrap\BootstrapPluginAsset',
+        'kartik\icons\FontAwesomeAsset',
         'yii\web\YiiAsset',
         'hustshenl\metronic\bundles\FontAsset',
-        'yii\bootstrap\BootstrapPluginAsset',
     ];
 
     /**
