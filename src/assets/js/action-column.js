@@ -7,7 +7,7 @@ yii.actionColumn = (function ($) {
     var pub = {
         clickableSelector: 'a.action-delete, a.action-refresh',
         isActive: true,
-        params : {},
+        params: {},
         getCsrfParam: function () {
             return $('meta[name=csrf-param]').prop('content');
         },
@@ -35,20 +35,23 @@ yii.actionColumn = (function ($) {
             var method = $e.data('method'),
                 url = $e.attr('href'),
                 action = $e.data('action'),
-                params = $e.data('params');
+                params = $e.data('params'),
+                pjax = $e.data('pjax');
 
             //通过Ajax处理删除和刷新
             if (!url || !url.match(/(^\/|:\/\/)/)) {
                 url = window.location.href;
             }
-            $.extend(pub.params,params);
+            $.extend(pub.params, params);
             $.post(
                 url,
                 pub.params,
-                function(res){
-                    if(action == 'delete'&&res.status == 1) $e.parents('tr').hide();
-                    if(typeof (res.data) == 'string') {
-                        pub.notify({type:res.status == 1?'success':'error',title:res.data});
+                function (res) {
+                    if (action == 'delete' && res.code == 0) {
+                        $e.parents('tr').hide();
+                    }
+                    if (typeof (res.data) == 'string') {
+                        pub.notify({type: res.code == 0 ? 'success' : 'error', title: res.data});
                     } else {
                         pub.notify(res.data);
                     }
@@ -60,11 +63,24 @@ yii.actionColumn = (function ($) {
         init: function () {
             initDataMethods();
         },
-        notify : function(data){
-            if(!data) return;
-            if(data.type == undefined || data.title == undefined) return;
-            toastr.options = {"closeButton":true,"debug":false,"positionClass":"toast-top-right","onclick":null,"showDuration":"1000","hideDuration":"1000","timeOut":"5000","extendedTimeOut":"1000","showEasing":"swing","hideEasing":"linear","showMethod":"fadeIn","hideMethod":"fadeOut"};
-            toastr[data.type](data.content == undefined ? null:data.content,data.title);
+        notify: function (data) {
+            if (!data) return;
+            if (data.type == undefined || data.title == undefined) return;
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "onclick": null,
+                "showDuration": "1000",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr[data.type](data.content == undefined ? null : data.content, data.title);
         }
 
     };
@@ -89,7 +105,7 @@ yii.actionColumn = (function ($) {
         };
         pub.refreshCsrfToken();
         $(pub.clickableSelector).off('click.yii')
-            .on('click.yiiAction',  handler);
+            .on('click.yiiAction', handler);
     }
 
     return pub;

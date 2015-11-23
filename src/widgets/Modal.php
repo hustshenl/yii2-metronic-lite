@@ -39,20 +39,38 @@ use hustshenl\metronic\bundles\ModalAsset;
  */
 class Modal extends Widget {
 
-    /**
-     * @var string the title in the modal window.
-     */
-    public $title;
+    const SIZE_LARGE = "modal-lg";
+    const SIZE_SMALL = "modal-sm";
+    const SIZE_DEFAULT = "";
 
+    /**
+     * @var string the header content in the modal window.
+     */
+    public $header;
+    /**
+     * @var string additional header options
+     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * @since 2.0.1
+     */
+    public $headerOptions;
     /**
      * @var string the footer content in the modal window.
      */
     public $footer;
-
     /**
-     * @var array the options for rendering the close button tag.
+     * @var string additional footer options
+     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * @since 2.0.1
+     */
+    public $footerOptions;
+    /**
+     * @var string the modal size. Can be [[SIZE_LARGE]] or [[SIZE_SMALL]], or empty for default.
+     */
+    public $size;
+    /**
+     * @var array|false the options for rendering the close button tag.
      * The close button is displayed in the header of the modal window. Clicking
-     * on the button will hide the modal window. If this is null, no close button will be rendered.
+     * on the button will hide the modal window. If this is false, no close button will be rendered.
      *
      * The following special options are supported:
      *
@@ -60,15 +78,25 @@ class Modal extends Widget {
      * - label: string, the label of the button. Defaults to '&times;'.
      *
      * The rest of the options will be rendered as the HTML attributes of the button tag.
-     * Please refer to the [Modal plugin help](http://twitter.github.com/bootstrap/javascript.html#modals)
+     * Please refer to the [Modal plugin help](http://getbootstrap.com/javascript/#modals)
      * for the supported HTML attributes.
      */
     public $closeButton = [];
-
     /**
-     * @var array the configuration array for [[Button]].
+     * @var array the options for rendering the toggle button tag.
+     * The toggle button is used to toggle the visibility of the modal window.
+     * If this property is false, no toggle button will be rendered.
+     *
+     * The following special options are supported:
+     *
+     * - tag: string, the tag name of the button. Defaults to 'button'.
+     * - label: string, the label of the button. Defaults to 'Show'.
+     *
+     * The rest of the options will be rendered as the HTML attributes of the button tag.
+     * Please refer to the [Modal plugin help](http://getbootstrap.com/javascript/#modals)
+     * for the supported HTML attributes.
      */
-    public $toggleButton = [];
+    public $toggleButton = false;
 
     /**
      * @var bool indicates whether the modal in full screen width.
@@ -117,11 +145,11 @@ class Modal extends Widget {
         $button = $this->renderCloseButton();
         if ($button !== null)
         {
-            $this->title = $button . "\n" . Html::tag('h4', $this->title, ['class' => 'modal-title']);
+            $this->header = $button . "\n" . Html::tag('h4', $this->header, ['class' => 'modal-title']);
         }
-        if ($this->title !== null)
+        if ($this->header !== null)
         {
-            return Html::tag('div', "\n" . $this->title . "\n", ['class' => 'modal-header']);
+            return Html::tag('div', "\n" . $this->header . "\n", ['class' => 'modal-header']);
         }
         else
         {
@@ -212,21 +240,17 @@ class Modal extends Widget {
             'tabindex' => -1,
                 ], $this->options);
         Html::addCssClass($this->options, 'modal');
-        if ($this->fullWidth)
-        {
+        if ($this->fullWidth) {
             Html::addCssClass($this->options, 'container');
         }
-        if ($this->stackable)
-        {
+        if ($this->stackable) {
             $this->options = array_merge($this->options, ['data-focus-on' => 'input:first']);
         }
-        if ($this->clientOptions !== false)
-        {
+        if ($this->clientOptions !== false) {
             $this->clientOptions = array_merge(['show' => false], $this->clientOptions);
         }
 
-        if ($this->closeButton !== null)
-        {
+        if ($this->closeButton !== null) {
             $this->closeButton = array_merge([
                 'data-dismiss' => 'modal',
                 'aria-hidden' => 'true',
@@ -234,8 +258,7 @@ class Modal extends Widget {
                     ], $this->closeButton);
         }
 
-        if (!empty($this->toggleButton))
-        {
+        if (!empty($this->toggleButton)) {
             $this->toggleButton = array_merge([
                 'options' => ['data-toggle' => 'modal'],
                     ], $this->toggleButton);

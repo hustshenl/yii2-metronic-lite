@@ -115,7 +115,7 @@ class ActionColumn extends \yii\grid\ActionColumn {
                         'title' => \Yii::t('yii', 'Delete'),
                         'data-confirm' => \Yii::t('yii', 'Are you sure you want to delete this item?'),
                         'data-method' => 'post',
-                        'data-pjax' => '1',
+                        'data-pjax' => '0',
                         'data-action' => 'delete',
                         'class' => $this->btnDeleteClass,
                 ]);
@@ -127,7 +127,7 @@ class ActionColumn extends \yii\grid\ActionColumn {
                     'title' => \Yii::t('yii', 'Refresh'),
                     'data-confirm' => \Yii::t('yii', 'Are you sure you want to refresh this item?'),
                     'data-method' => 'post',
-                    'data-pjax' => '1',
+                    'data-pjax' => '0',
                     'data-action' => 'refresh',
                     'class' => $this->btnRefreshClass,
                 ]);
