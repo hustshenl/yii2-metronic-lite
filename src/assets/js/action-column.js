@@ -47,11 +47,11 @@ yii.actionColumn = (function ($) {
                 url,
                 pub.params,
                 function (res) {
-                    if (action == 'delete' && res.code == 0) {
+                    if (action == 'delete' && res.status == 0) {
                         $e.parents('tr').hide();
                     }
                     if (typeof (res.data) == 'string') {
-                        pub.notify({type: res.code == 0 ? 'success' : 'error', title: res.data});
+                        pub.notify({type: res.status == 0 ? 'success' : 'error', title: res.data});
                     } else {
                         pub.notify(res.data);
                     }
