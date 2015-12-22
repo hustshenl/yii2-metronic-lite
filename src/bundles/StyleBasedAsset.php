@@ -30,7 +30,7 @@ class StyleBasedAsset extends AssetBundle {
      * @var array css assets
      */
     public $css = [
-        'global/css/plugins.css',
+        'global/css/plugins-md.css',
     ];
 
     /**

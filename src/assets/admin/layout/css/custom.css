@@ -1,5 +1,36 @@
 /* here you can put your own css to customize and override the theme */
-
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.primary-font,
+.chart,
+.pie,
+.bars,
+.label,
+.table.table-light > thead > tr > th,
+.datepaginator a,
+.datepicker table td,
+.datepicker table th,
+.datetimepicker table td,
+.datetimepicker table th,
+.bootstrap-select.btn-group .dropdown-menu > li > dt > .text,
+.gritter-title,
+.page-title,
+.dropdown-menu,
+.select2-container--bootstrap .select2-results__group,
+.select2-container--bootstrap .select2-selection,
+.morris-hover.morris-default-style .morris-hover-row-label,
+.morris-hover.morris-default-style .morris-hover-point,
+.page-header.navbar .hor-menu .navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu li > a,
+.page-header.navbar .hor-menu .navbar-nav > li .dropdown-menu li > a,
+.page-header.navbar .hor-menu .navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content,
+.page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle > .badge {
+    font-family: "微软雅黑", "宋体", sans-serif !important;
+}
 /***
 Rounded Portlets
 ***/
