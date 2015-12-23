@@ -31,6 +31,10 @@ h6,
 .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle > .badge {
     font-family: "微软雅黑", "宋体", sans-serif !important;
 }
+.page-header.navbar .page-logo .logo-default {
+    margin: 2px 0 0 0;
+}
+
 /***
 Rounded Portlets
 ***/
