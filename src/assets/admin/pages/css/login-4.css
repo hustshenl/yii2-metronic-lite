@@ -137,3 +137,10 @@ Login page
     font-size: 22px; }
   .login .checkbox {
     font-size: 13px; } }
+
+.social-icons li{
+  text-indent: 0;
+  font-size: 18px;
+  text-align: center;
+  line-height:28px;
+}

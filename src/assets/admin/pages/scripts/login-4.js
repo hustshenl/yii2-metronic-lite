@@ -44,9 +44,9 @@ var Login = function () {
 	                error.insertAfter(element.closest('.input-icon'));
 	            },
 
-	            submitHandler: function (form) {
+	            /*submitHandler: function (form) {
 	                form.submit();
-	            }
+	            }*/
 	        });
 
 	        $('.login-form input').keypress(function (e) {
@@ -96,9 +96,9 @@ var Login = function () {
 	                error.insertAfter(element.closest('.input-icon'));
 	            },
 
-	            submitHandler: function (form) {
+	            /*submitHandler: function (form) {
 	                form.submit();
-	            }
+	            }*/
 	        });
 
 	        $('.forget-form input').keypress(function (e) {
@@ -220,9 +220,9 @@ var Login = function () {
 	                }
 	            },
 
-	            submitHandler: function (form) {
+	            /*submitHandler: function (form) {
 	                form.submit();
-	            }
+	            }*/
 	        });
 
 			$('.register-form input').keypress(function (e) {
@@ -249,9 +249,9 @@ var Login = function () {
         //main function to initiate the module
         init: function () {
 
-            handleLogin();
-            handleForgetPassword();
-            handleRegister();
+            //handleLogin();
+            //handleForgetPassword();
+            //handleRegister();
 
             // init background slide images
 		    $.backstretch([
