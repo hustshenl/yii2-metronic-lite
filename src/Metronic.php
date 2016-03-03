@@ -158,11 +158,6 @@ class Metronic extends \yii\base\Component {
     const UI_COLOR_GREY_GALLERY = 'grey-gallery';
 
     /**
-     * Classes paths
-     */
-    const CLASS_HTML = '@vendor/hustshenl/yii2-metronic-lite/src/helpers/Html.php';
-
-    /**
      * @var string version
      */
     public $version = self::VERSION_1;
@@ -222,13 +217,6 @@ class Metronic extends \yii\base\Component {
      */
     public function init()
     {
-        $htmlClass = \yii\helpers\ArrayHelper::getValue(Yii::$classMap, 'yii\helpers\Html', null);
-
-        if ($htmlClass != self::CLASS_HTML)
-        {
-            throw new InvalidConfigException('Default Yii2 Html helper class is not allowed. For using Metronic theme put Yii::$classMap[\'yii\\helpers\\Html\'] = \'' . self::CLASS_HTML . '\'; into your bootstrap.php');
-        }
-
         if (self::SIDEBAR_FIXED === $this->sidebarOption && self::SIDEBAR_MENU_HOVER === $this->sidebarMenu)
         {
             throw new InvalidConfigException('Hover Sidebar Menu is not compatible with Fixed Sidebar Mode. Select Default Sidebar Mode Instead.');
