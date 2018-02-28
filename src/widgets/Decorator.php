@@ -7,12 +7,12 @@
 namespace hustshenl\metronic\widgets;
 
 use yii\base\InvalidCallException;
-use yii\base\Object;
+use yii\base\BaseObject;
 
 /**
  * Decorator outputs buffering content between [[begin()]] and [[end()]]
  */
-class Decorator extends Object
+class Decorator extends BaseObject
 {
     /**
      * @var array this property is maintained by [[begin()]] and [[end()]] methods.
