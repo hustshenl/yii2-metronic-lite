@@ -45,7 +45,7 @@ test( "error containers, simple", function() {
 		v = $( "#form" ).validate({
 			errorLabelContainer: container,
 			showErrors: function() {
-				container.find( "h3" ).html( jQuery.validator.format( "There are {0} errors in your form.", this.size()) );
+				container.find( "h3" ).html( jQuery.validator.format( "There are {0} errors in your form.", this.length) );
 				this.defaultShowErrors();
 			}
 		});

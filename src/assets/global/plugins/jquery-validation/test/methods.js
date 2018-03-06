@@ -389,12 +389,12 @@ asyncTest("remote", function() {
 
 	$(document).ajaxStop(function() {
 		$(document).unbind("ajaxStop");
-		equal( 1, v.size(), "There must be one error" );
+		equal( 1, v.length, "There must be one error" );
 		equal( "Peter in use", v.errorList[0].message );
 
 		$(document).ajaxStop(function() {
 			$(document).unbind("ajaxStop");
-			equal( 1, v.size(), "There must be one error" );
+			equal( 1, v.length, "There must be one error" );
 			equal( "Peter2 in use", v.errorList[0].message );
 			start();
 		});
@@ -457,7 +457,7 @@ asyncTest("remote extensions", function() {
 
 	$(document).ajaxStop(function() {
 		$(document).unbind("ajaxStop");
-		if ( v.size() !== 0 ) {
+		if ( v.length !== 0 ) {
 			ok( "There must be one error" );
 			equal( v.errorList[0].message, "asdf is already taken, please try something else" );
 			v.element(e);

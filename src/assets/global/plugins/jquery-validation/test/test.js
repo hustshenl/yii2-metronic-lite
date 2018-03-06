@@ -167,7 +167,7 @@ test( "addMethod2", function() {
 
 	e.value = "";
 	strictEqual( v.element( e ), true, "Rule is optional, valid" );
-	equal( 0, v.size() );
+	equal( 0, v.length );
 	e.value = "ko";
 	ok( !v.element( e ), "Invalid, doesn't contain one of the required characters" );
 	e.value = "ko1";
@@ -261,13 +261,13 @@ test( "check(): simple", function() {
 	var element = $( "#firstname" )[ 0 ],
 		v = $( "#testForm1" ).validate();
 
-	ok( v.size() === 0, "No errors yet" );
+	ok( v.length === 0, "No errors yet" );
 	v.check( element );
-	ok( v.size() === 1, "error exists" );
+	ok( v.length === 1, "error exists" );
 	v.errorList = [];
 	$( "#firstname" ).val( "hi" );
 	v.check( element );
-	ok( v.size() === 0, "No more errors" );
+	ok( v.length === 0, "No more errors" );
 });
 
 test( "hide(): input", function() {
@@ -768,10 +768,10 @@ test( "validating multiple checkboxes with 'required'", function() {
 	});
 	v.form();
 
-	equal( v.size(), 1 );
+	equal( v.length, 1 );
 	checkboxes.filter( ":last" ).prop( "checked", true );
 	v.form();
-	equal( v.size(), 0 );
+	equal( v.length, 0 );
 });
 
 test( "dynamic form", function() {
@@ -781,7 +781,7 @@ test( "dynamic form", function() {
 		$( "<input data-rule-required='true' name='list" + counter++ + "' />" ).appendTo( "#testForm2" );
 	}
 	function errors( expected, message ) {
-		equal( expected, v.size(), message );
+		equal( expected, v.length, message );
 	}
 
 	v = $( "#testForm2" ).validate();
@@ -821,7 +821,7 @@ test( "idOrName()", function() {
 
 test( "resetForm()", function() {
 	function errors( expected, message ) {
-		equal( expected, v.size(), message );
+		equal( expected, v.length, message );
 	}
 	var v = $( "#testForm1" ).validate();
 	v.form();
@@ -1104,7 +1104,7 @@ test( "option: ignore", function() {
 		ignore: "[name=lastname]"
 	});
 	v.form();
-	equal( 1, v.size() );
+	equal( 1, v.length );
 });
 
 test( "option: subformRequired", function() {
@@ -1116,10 +1116,10 @@ test( "option: subformRequired", function() {
 	}, "" );
 	var v = $( "#subformRequired" ).validate();
 	v.form();
-	equal( 1, v.size() );
+	equal( 1, v.length );
 	$( "#bill_to_co" ).attr( "checked", false );
 	v.form();
-	equal( 2, v.size() );
+	equal( 2, v.length );
 
 	delete $.validator.methods.billingRequired;
 	delete $.validator.messages.billingRequired;
@@ -1162,7 +1162,7 @@ module( "events" );
 
 test( "validate on blur", function() {
 	function errors( expected, message ) {
-		equal( v.size(), expected, message );
+		equal( v.length, expected, message );
 	}
 	function labels( expected ) {
 		equal( v.errors().filter( ":visible" ).length, expected );
@@ -1205,7 +1205,7 @@ test( "validate on blur", function() {
 
 test( "validate on keyup", function() {
 	function errors( expected, message ) {
-		equal( expected, v.size(), message );
+		equal( expected, v.length, message );
 	}
 	function keyup( target ) {
 		target.trigger( "keyup" );
@@ -1236,7 +1236,7 @@ test( "validate on keyup", function() {
 
 test( "validate on not keyup, only blur", function() {
 	function errors( expected, message ) {
-		equal( expected, v.size(), message );
+		equal( expected, v.length, message );
 	}
 	var e = $( "#firstname" ),
 		v = $( "#testForm1" ).validate({
@@ -1254,7 +1254,7 @@ test( "validate on not keyup, only blur", function() {
 
 test( "validate on keyup and blur", function() {
 	function errors( expected, message ) {
-		equal( expected, v.size(), message );
+		equal( expected, v.length, message );
 	}
 	var e = $( "#firstname" ),
 		v = $( "#testForm1" ).validate();
@@ -1269,7 +1269,7 @@ test( "validate on keyup and blur", function() {
 
 test( "validate email on keyup and blur", function() {
 	function errors( expected, message ) {
-		equal( expected, v.size(), message );
+		equal( expected, v.length, message );
 	}
 	var e = $( "#firstname" ),
 		v = $( "#testForm1" ).validate();
@@ -1286,7 +1286,7 @@ test( "validate email on keyup and blur", function() {
 
 test( "don't revalidate the field when pressing special characters", function() {
 	function errors( expected, message ) {
-		equal( expected, v.size(), message );
+		equal( expected, v.length, message );
 	}
 
 	function triggerEvent( element, keycode ) {
@@ -1336,7 +1336,7 @@ test( "don't revalidate the field when pressing special characters", function() 
 
 test( "validate checkbox on click", function() {
 	function errors( expected, message ) {
-		equal( expected, v.size(), message );
+		equal( expected, v.length, message );
 	}
 	function trigger( element ) {
 		element.click();
@@ -1363,7 +1363,7 @@ test( "validate checkbox on click", function() {
 
 test( "validate multiple checkbox on click", function() {
 	function errors( expected, message ) {
-		equal( expected, v.size(), message );
+		equal( expected, v.length, message );
 	}
 	function trigger( element ) {
 		element.click();
@@ -1420,7 +1420,7 @@ test( "correct checkbox receives the error", function() {
 
 test( "validate radio on click", function() {
 	function errors( expected, message ) {
-		equal( expected, v.size(), message );
+		equal( expected, v.length, message );
 	}
 	function trigger( element ) {
 		element.click();
@@ -1446,7 +1446,7 @@ test( "validate radio on click", function() {
 
 test( "validate input with no type attribute, defaulting to text", function() {
 	function errors( expected, message ) {
-		equal( expected, v.size(), message );
+		equal( expected, v.length, message );
 	}
 	var v = $( "#testForm12" ).validate(),
 		e = $( "#testForm12text" );

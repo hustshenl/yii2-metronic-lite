@@ -131,7 +131,7 @@ var Layout = function () {
             });
         }
 
-        if (!el || el.size() == 0) {
+        if (!el || el.length == 0) {
             return;
         }
 
@@ -147,7 +147,7 @@ var Layout = function () {
         el.parents('li').each(function () {
             $(this).addClass('active');
 
-            if ($(this).parent('ul.navbar-nav').size() === 1) {
+            if ($(this).parent('ul.navbar-nav').length === 1) {
                 $(this).find('> a').append('<span class="selected"></span>');
             }
         });

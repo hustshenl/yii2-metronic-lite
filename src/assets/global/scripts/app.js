@@ -202,9 +202,9 @@ var App = function() {
             return;
         }
         var test = $("input[type=checkbox]:not(.toggle, .md-check, .md-radiobtn, .make-switch, .icheck), input[type=radio]:not(.toggle, .md-check, .md-radiobtn, .star, .make-switch, .icheck)");
-        if (test.size() > 0) {
+        if (test.length > 0) {
             test.each(function() {
-                if ($(this).parents(".checker").size() === 0) {
+                if ($(this).parents(".checker").length === 0) {
                     $(this).show();
                     $(this).uniform();
                 }
@@ -358,9 +358,9 @@ var App = function() {
     var handleModals = function() {
         // fix stackable modal issue: when 2 or more modals opened, closing one of modal will remove .modal-open class. 
         $('body').on('hide.bs.modal', function() {
-            if ($('.modal:visible').size() > 1 && $('html').hasClass('modal-open') === false) {
+            if ($('.modal:visible').length > 1 && $('html').hasClass('modal-open') === false) {
                 $('html').addClass('modal-open');
-            } else if ($('.modal:visible').size() <= 1) {
+            } else if ($('.modal:visible').length <= 1) {
                 $('html').removeClass('modal-open');
             }
         });
@@ -482,7 +482,7 @@ var App = function() {
             return;
         }
 
-        if ($(".fancybox-button").size() > 0) {
+        if ($(".fancybox-button").length > 0) {
             $(".fancybox-button").fancybox({
                 groupAttr: 'data-rel',
                 prevEffect: 'none',
@@ -663,7 +663,7 @@ var App = function() {
 
         // wrApper function to scroll(focus) to an element
         scrollTo: function(el, offeset) {
-            var pos = (el && el.size() > 0) ? el.offset().top : 0;
+            var pos = (el && el.length > 0) ? el.offset().top : 0;
 
             if (el) {
                 if ($('body').hasClass('page-header-fixed')) {
@@ -865,7 +865,7 @@ var App = function() {
                 if ($('body').hasClass("page-container-bg-solid") || $('body').hasClass("page-content-white")) {
                     $('.page-title').after(html);
                 } else {
-                    if ($('.page-bar').size() > 0) {
+                    if ($('.page-bar').length > 0) {
                         $('.page-bar').after(html);
                     } else {
                         $('.page-breadcrumb').after(html);
@@ -896,7 +896,7 @@ var App = function() {
         initUniform: function(els) {
             if (els) {
                 $(els).each(function() {
-                    if ($(this).parents(".checker").size() === 0) {
+                    if ($(this).parents(".checker").length === 0) {
                         $(this).show();
                         $(this).uniform();
                     }
